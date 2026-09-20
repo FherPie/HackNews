@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class StoryFilterServiceTest {
@@ -66,6 +67,59 @@ class StoryFilterServiceTest {
 		);
 
 		assertEquals(500, result.get(0).points());
+	}
+
+
+	@Test
+	void shouldNotIncludeTitleWithExactlyFiveWordsInLongTitles() {
+
+		Story story = new Story(
+				"Java Spring Boot is great",
+				100,
+				20
+		);
+
+		List<Story> result =
+				service.filterLongTitles(List.of(story));
+
+		assertTrue(result.isEmpty());
+	}
+
+
+	@Test
+	void shouldReturnEmptyListWhenFilteringEmptyList() {
+
+		List<Story> longTitles =
+				service.filterLongTitles(List.of());
+
+		List<Story> shortTitles =
+				service.filterShortTitles(List.of());
+
+		assertTrue(longTitles.isEmpty());
+		assertTrue(shortTitles.isEmpty());
+	}
+
+	@Test
+	void shouldKeepAllStoriesWhenCommentsAreEqual() {
+
+		Story first = new Story(
+				"This is a title with many words",
+				50,
+				100
+		);
+
+		Story second = new Story(
+				"Another title that contains many words here",
+				80,
+				100
+		);
+
+		List<Story> result =
+				service.filterLongTitles(List.of(first, second));
+
+		assertEquals(2, result.size());
+		assertTrue(result.contains(first));
+		assertTrue(result.contains(second));
 	}
 
 }
