@@ -1,5 +1,7 @@
 package com.hacknews.andres.service;
 
+import java.util.Arrays;
+
 public class WordCounter {
 
   public int count(String text) {
@@ -9,6 +11,8 @@ public class WordCounter {
       return 0;
     }
 
-    return normalized.split("\\s+").length;
+    return (int) Arrays.stream(normalized.split("\\s+"))
+        .filter(token -> token.matches(".*[\\p{L}\\p{N}].*"))
+        .count();
   }
 }

@@ -1,5 +1,6 @@
 package com.hacknews.andres.service;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -13,7 +14,7 @@ public class WordCounterTest {
   @ParameterizedTest
   @CsvSource({
       "'Hola que-tal como estas', 4",
-      "'Flet 1.0 – Build cross-platform apps in Python', 8",
+      "'Flet 1.0 – Build cross-platform apps in Python', 7",
       "'Cekura (YC F24) Is Hiring', 5",
       "'Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA', 6"
   })
@@ -37,5 +38,15 @@ public class WordCounterTest {
       int expected) {
 
     assertEquals(expected, wordCounter.count(title));
+  }
+
+  @Test
+  void shouldIgnoreSymbolOnlyTokensWhenCountingWords() {
+
+    int result = wordCounter.count(
+        "This is - a self-explained example"
+    );
+
+    assertEquals(5, result);
   }
 }
