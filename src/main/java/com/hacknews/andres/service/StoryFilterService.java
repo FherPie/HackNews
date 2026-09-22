@@ -4,7 +4,9 @@ import com.hacknews.andres.model.Story;
 
 import java.util.Comparator;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StoryFilterService {
 
   private final WordCounter wordCounter = new WordCounter();
